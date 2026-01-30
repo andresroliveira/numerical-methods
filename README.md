@@ -49,9 +49,12 @@ Methods for finding zeros of real functions:
 #### Advanced Methods (MS512/MT402)
 
 - **Cholesky** - Cholesky factorization for symmetric positive definite matrices
+- **Householder** - Householder reflections for QR decomposition
+- **Givens** - Givens rotations for QR decomposition
 - **SOR** - Successive Over-Relaxation method
 - **Conjugate Gradient** - Conjugate gradient method for large sparse systems
 - **Power Method** - Power iteration for finding dominant eigenvalue
+- **QR Eigenvalues** - QR algorithm for computing all eigenvalues
 - **Matrix Norms** - Matrix and vector norm computations (1-norm, ∞-norm, Frobenius)
 
 ### 3. **Interpolation** (Polynomial Interpolation)
