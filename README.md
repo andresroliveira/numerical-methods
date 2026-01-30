@@ -6,6 +6,7 @@ This is a repository containing the implementation of numerical methods in Pytho
 
 - **MS211 - Cálculo Numérico** (Numerical Calculus)
 - **MS512 - Análise Numérica I** (Numerical Analysis I)
+- **MS612 - Análise Numérica II** (Numerical Analysis II)
 - **MT402 - Matrizes** (Matrices)
 
 ### Main Topics Covered
@@ -19,6 +20,8 @@ This is a repository containing the implementation of numerical methods in Pytho
 - Numerical integration
 - Least squares approximation
 - Ordinary differential equations (IVP and BVP)
+- Partial differential equations (heat, wave, Poisson)
+- Advanced ODE methods (adaptive stepping, multi-step, stiff problems)
 - Systems of nonlinear equations
 
 All implementations use pure Python (no external libraries like NumPy or SciPy) for educational purposes. Use carefully and always verify results. This is not an official repository of these courses.
@@ -38,7 +41,7 @@ Methods for finding zeros of real functions:
 
 ### 2. **Matrix** (Linear Systems & Advanced Topics)
 
-#### Basic Methods (MS211)
+#### Basic Linear Systems (MS211)
 
 - **Gauss Elimination** - Gaussian elimination with partial pivoting
 - **LU Decomposition** - LU factorization
@@ -88,6 +91,8 @@ Methods for numerical integration:
 
 ### 6. **ODE** (Ordinary Differential Equations)
 
+#### Basic IVP Methods (MS211)
+
 Methods for solving initial value problems:
 
 - **Euler** - Euler's method
@@ -96,16 +101,49 @@ Methods for solving initial value problems:
 - **Taylor Series** - Taylor series method (2nd and 3rd order)
 - **Higher Order** - Solving higher-order ODEs via system reduction
 
-### 7. **BVP** (Boundary Value Problems)
+#### Advanced Methods (MS612)
 
-Methods for solving boundary value problems:
+Advanced techniques for ODEs:
+
+- **Runge-Kutta-Fehlberg (RK45)** - Adaptive step size control with error estimation
+- **Adams-Bashforth** - Explicit multi-step methods (2nd and 4th order)
+- **Adams-Moulton** - Implicit multi-step methods (2nd and 4th order)
+- **Backward Euler** - Implicit method for stiff problems
+- **BDF2** - 2nd order Backward Differentiation Formula for stiff ODEs
+
+### 7. **PDE** (Partial Differential Equations)
+
+Methods for solving PDEs (MS612):
+
+#### Heat Equation (Parabolic)
+
+- **Explicit (FTCS)** - Forward-Time Central-Space method
+- **Implicit (BTCS)** - Backward-Time Central-Space method (unconditionally stable)
+- **Crank-Nicolson** - Semi-implicit, 2nd order accurate
+
+#### Poisson/Laplace Equation (Elliptic)
+
+- **Jacobi** - Jacobi iteration for 2D Poisson equation
+- **Gauss-Seidel** - Gauss-Seidel iteration (faster convergence)
+- **SOR** - Successive Over-Relaxation (optimal convergence)
+
+#### Wave Equation (Hyperbolic)
+
+- **Standard Explicit** - Centered differences with CFL condition
+- **Lax-Friedrichs** - Dissipative but stable scheme
+- **Upwind** - First-order upwind scheme for advection
+- **Lax-Wendroff** - Second-order accurate scheme
+
+### 8. **BVP** (Boundary Value Problems)
+
+Methods for solving boundary value problems (MS211):
 
 - **Finite Differences (Linear)** - Finite difference method for linear BVPs
 - **Finite Differences (Nonlinear)** - Finite difference with Newton's method for nonlinear BVPs
 
-### 8. **Nonlinear Systems**
+### 9. **Nonlinear Systems**
 
-Methods for solving systems of nonlinear equations:
+Methods for solving systems of nonlinear equations (MS211):
 
 - **Newton System** - Newton's method for systems of nonlinear equations
 
@@ -207,6 +245,47 @@ def J(x):
 
 solution = newton_system(F, J, [1.5, 1.5])
 print(solution)  # Solves x^2 + y^2 = 5, xy = 2
+```
+
+### Example 8: Adaptive ODE Solver (RK45)
+
+```python
+from ode import rk45
+
+def f(t, y):
+    return -10 * y  # Stiff problem
+
+t_vals, y_vals = rk45(f, 0, 1, 2.0, tol=1e-8)
+print(f"Solved with {len(t_vals)} adaptive steps")
+```
+
+### Example 9: Heat Equation (PDE)
+
+```python
+from pde import heat_crank_nicolson
+import math
+
+def u0(x):
+    return math.sin(math.pi * x)
+
+bc = {'left': 0, 'right': 0}
+
+x, t, u = heat_crank_nicolson(0.1, 0, 1, 51, 1.0, 0.01, u0, bc)
+# Solves ∂u/∂t = 0.1 ∂²u/∂x²
+```
+
+### Example 10: Poisson Equation (2D PDE)
+
+```python
+from pde import poisson_sor
+
+def f(x, y):
+    return -2  # Source term
+
+bc = {'left': 0, 'right': 0, 'bottom': 0, 'top': 1}
+
+x, y, u, iters = poisson_sor(0, 1, 21, 0, 1, 21, f, bc, omega=1.8)
+print(f"Converged in {iters} iterations")
 ```
 
 ## License
