@@ -2,19 +2,26 @@
 
 ## Introduction
 
-This is a repository containing the implementation of some numerical methods in Python. Methods are lectured in the course `MS211 - Cálculo Numérico` at `Universidade Estadual de Campinas (UNICAMP)`.
+This is a repository containing the implementation of numerical methods in Python. The methods cover topics from several courses at `Universidade Estadual de Campinas (UNICAMP)`:
 
-The topics of this course are:
+- **MS211 - Cálculo Numérico** (Numerical Calculus)
+- **MS512 - Análise Numérica I** (Numerical Analysis I)
+- **MT402 - Matrizes** (Matrices)
 
-- Floating point arithmetic.
-- Real function zeros.
-- Linear systems.
-- Polynomial interpolation.
-- Numerical integration.
-- Linear least squares.
-- Numerical treatment of ordinary differential equations.
+### Main Topics Covered
 
-This repository is a subset of the topics lectured in the course. Use carefully and always check the results. This is not an official repository of the course.
+- Floating point arithmetic
+- Real function zeros
+- Linear systems (direct and iterative methods)
+- Matrix factorizations (LU, QR, Cholesky)
+- Eigenvalue computations
+- Polynomial interpolation
+- Numerical integration
+- Least squares approximation
+- Ordinary differential equations (IVP and BVP)
+- Systems of nonlinear equations
+
+All implementations use pure Python (no external libraries like NumPy or SciPy) for educational purposes. Use carefully and always verify results. This is not an official repository of these courses.
 
 ## Description
 
@@ -29,15 +36,23 @@ Methods for finding zeros of real functions:
 - **Newton** - Newton-Raphson method
 - **Secant** - Secant method
 
-### 2. **Matrix** (Linear Systems)
+### 2. **Matrix** (Linear Systems & Advanced Topics)
 
-Methods for solving linear systems and matrix decomposition:
+#### Basic Methods (MS211)
 
 - **Gauss Elimination** - Gaussian elimination with partial pivoting
 - **LU Decomposition** - LU factorization
 - **QR Decomposition** - QR factorization
 - **Jacobi** - Jacobi iterative method
 - **Gauss-Seidel** - Gauss-Seidel iterative method
+
+#### Advanced Methods (MS512/MT402)
+
+- **Cholesky** - Cholesky factorization for symmetric positive definite matrices
+- **SOR** - Successive Over-Relaxation method
+- **Conjugate Gradient** - Conjugate gradient method for large sparse systems
+- **Power Method** - Power iteration for finding dominant eigenvalue
+- **Matrix Norms** - Matrix and vector norm computations (1-norm, ∞-norm, Frobenius)
 
 ### 3. **Interpolation** (Polynomial Interpolation)
 
