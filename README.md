@@ -33,6 +33,7 @@ Methods for finding zeros of real functions:
 
 Methods for solving linear systems and matrix decomposition:
 
+- **Gauss Elimination** - Gaussian elimination with partial pivoting
 - **LU Decomposition** - LU factorization
 - **QR Decomposition** - QR factorization
 - **Jacobi** - Jacobi iterative method
@@ -65,6 +66,7 @@ Methods for numerical integration:
 - **Riemann Sum** - Riemann sum approximation
 - **Trapezoidal Rule** - Trapezoidal rule
 - **Simpson's Rule** - Simpson's 1/3 rule
+- **Gaussian Quadrature** - Gauss-Legendre quadrature (2, 3, and 4 points)
 
 ### 6. **ODE** (Ordinary Differential Equations)
 
@@ -73,6 +75,21 @@ Methods for solving initial value problems:
 - **Euler** - Euler's method
 - **Heun** - Heun's method (improved Euler)
 - **Runge-Kutta** - Classical 4th order Runge-Kutta
+- **Taylor Series** - Taylor series method (2nd and 3rd order)
+- **Higher Order** - Solving higher-order ODEs via system reduction
+
+### 7. **BVP** (Boundary Value Problems)
+
+Methods for solving boundary value problems:
+
+- **Finite Differences (Linear)** - Finite difference method for linear BVPs
+- **Finite Differences (Nonlinear)** - Finite difference with Newton's method for nonlinear BVPs
+
+### 8. **Nonlinear Systems**
+
+Methods for solving systems of nonlinear equations:
+
+- **Newton System** - Newton's method for systems of nonlinear equations
 
 Each method is implemented as a function in a separate module. The modules are organized into directories based on the category of the method.
 
@@ -126,6 +143,52 @@ def f(x):
 
 result = runge_kutta(f, x0=0.1, T=5, n=100)
 # Returns list of solution values at each time step
+```
+
+### Example 5: Gaussian Quadrature
+
+```python
+from integration import gaussian_quadrature
+import math
+
+def f(x):
+    return math.sin(x)
+
+integral = gaussian_quadrature(f, 0, math.pi, n=3)
+print(integral)  # Approximates 2.0
+```
+
+### Example 6: Boundary Value Problem
+
+```python
+from bvp import finite_differences_linear
+
+def p(x):
+    return 0
+
+def q(x):
+    return 0
+
+def r(x):
+    return -2
+
+x, y = finite_differences_linear(p, q, r, 0, 1, 0, 0, n=10)
+# Solves y'' = -2, y(0) = 0, y(1) = 0
+```
+
+### Example 7: Nonlinear Systems
+
+```python
+from nonlinear_systems import newton_system
+
+def F(x):
+    return [x[0]**2 + x[1]**2 - 5, x[0]*x[1] - 2]
+
+def J(x):
+    return [[2*x[0], 2*x[1]], [x[1], x[0]]]
+
+solution = newton_system(F, J, [1.5, 1.5])
+print(solution)  # Solves x^2 + y^2 = 5, xy = 2
 ```
 
 ## License
