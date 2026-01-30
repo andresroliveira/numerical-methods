@@ -55,7 +55,8 @@ Methods for finding zeros of real functions:
 - **Householder** - Householder reflections for QR decomposition
 - **Givens** - Givens rotations for QR decomposition
 - **SOR** - Successive Over-Relaxation method
-- **Conjugate Gradient** - Conjugate gradient method for large sparse systems
+- **Conjugate Gradient** - Conjugate gradient method for large sparse systems (Krylov)
+- **Arnoldi** - Arnoldi iteration for eigenvalues of non-symmetric matrices (Krylov)
 - **Power Method** - Power iteration for finding dominant eigenvalue
 - **QR Eigenvalues** - QR algorithm for computing all eigenvalues
 - **Matrix Norms** - Matrix and vector norm computations (1-norm, ∞-norm, Frobenius)
