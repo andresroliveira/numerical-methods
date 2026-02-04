@@ -21,7 +21,7 @@ def power_method(A, tol=1e-6, max_iter=1000):
 
     # Initial guess (normalized random vector)
     v = [1.0] * n
-    norm = sum(x**2 for x in v)**0.5
+    norm = sum(x**2 for x in v) ** 0.5
     v = [x / norm for x in v]
 
     eigenvalue = 0.0
@@ -34,7 +34,7 @@ def power_method(A, tol=1e-6, max_iter=1000):
         eigenvalue_new = sum(v[i] * Av[i] for i in range(n))
 
         # Normalize
-        norm = sum(x**2 for x in Av)**0.5
+        norm = sum(x**2 for x in Av) ** 0.5
         v_new = [x / norm for x in Av]
 
         # Check convergence
@@ -70,7 +70,7 @@ def inverse_power_method(A, tol=1e-6, max_iter=1000):
 
     # Initial guess
     v = [1.0] * n
-    norm = sum(x**2 for x in v)**0.5
+    norm = sum(x**2 for x in v) ** 0.5
     v = [x / norm for x in v]
 
     eigenvalue = 0.0
@@ -83,7 +83,7 @@ def inverse_power_method(A, tol=1e-6, max_iter=1000):
         eigenvalue_new = sum(v[i] * w[i] for i in range(n))
 
         # Normalize
-        norm = sum(x**2 for x in w)**0.5
+        norm = sum(x**2 for x in w) ** 0.5
         v_new = [x / norm for x in w]
 
         # Check convergence
@@ -166,7 +166,7 @@ def rayleigh_quotient(A, v):
     n = len(A)
     Av = [sum(A[i][j] * v[j] for j in range(n)) for i in range(n)]
     numerator = sum(v[i] * Av[i] for i in range(n))
-    denominator = sum(v[i]**2 for i in range(n))
+    denominator = sum(v[i] ** 2 for i in range(n))
     return numerator / denominator if denominator != 0 else 0
 
 
@@ -185,11 +185,10 @@ def main():
 
     # Verify: A * v should equal λ * v
     Av = [
-        sum(A[i][j] * eigenvector_max[j] for j in range(len(A)))
-        for i in range(len(A))
+        sum(A[i][j] * eigenvector_max[j] for j in range(len(A))) for i in range(len(A))
     ]
     lambda_v = [eigenvalue_max * x for x in eigenvector_max]
-    print(f"\nVerification:")
+    print("\nVerification:")
     print(f"A*v = {[f'{x:.6f}' for x in Av]}")
     print(f"λ*v = {[f'{x:.6f}' for x in lambda_v]}")
 

@@ -77,7 +77,7 @@ def qr_decomposition_gram_schmidt(A):
                 v[k] -= R[i][j] * Q[k][i]
 
         # Normalize
-        R[j][j] = sum(v[k]**2 for k in range(m))**0.5
+        R[j][j] = sum(v[k] ** 2 for k in range(m)) ** 0.5
 
         if R[j][j] > 1e-10:
             for k in range(m):
@@ -152,8 +152,9 @@ def qr_shifted(A, tol=1e-8, max_iter=1000):
         # Wilkinson shift
         delta = (A_k[m - 2][m - 2] - A_k[m - 1][m - 1]) / 2
         sign = 1 if delta >= 0 else -1
-        mu = A_k[m - 1][m - 1] - sign * A_k[m - 1][m - 2]**2 / (
-            abs(delta) + (delta**2 + A_k[m - 1][m - 2]**2)**0.5)
+        mu = A_k[m - 1][m - 1] - sign * A_k[m - 1][m - 2] ** 2 / (
+            abs(delta) + (delta**2 + A_k[m - 1][m - 2] ** 2) ** 0.5
+        )
 
         # Shift: A_k - mu*I
         for i in range(m):
@@ -187,9 +188,9 @@ def main():
         print(row)
 
     eigenvalues = qr_algorithm(A, tol=1e-10)
-    print(f"\nEigenvalues (QR algorithm):")
+    print("\nEigenvalues (QR algorithm):")
     for i, eig in enumerate(eigenvalues):
-        print(f"  λ{i+1} = {eig:.8f}")
+        print(f"  λ{i + 1} = {eig:.8f}")
 
     print("\n(Exact eigenvalues: 2-√2, 2, 2+√2)")
     print(f"(Approx: {2 - 2**0.5:.8f}, 2.0, {2 + 2**0.5:.8f})")
@@ -202,9 +203,9 @@ def main():
         print(row)
 
     eigenvalues2 = qr_algorithm(A2)
-    print(f"\nEigenvalues:")
+    print("\nEigenvalues:")
     for i, eig in enumerate(eigenvalues2):
-        print(f"  λ{i+1} = {eig:.8f}")
+        print(f"  λ{i + 1} = {eig:.8f}")
 
     print("\n(Exact eigenvalues: 2, 4)")
 

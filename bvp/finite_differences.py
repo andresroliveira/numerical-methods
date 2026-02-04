@@ -117,16 +117,9 @@ def finite_differences_linear(p, q, r, a, b, alpha, beta, n):
     return x, y
 
 
-def finite_differences_nonlinear(f,
-                                 df_dy,
-                                 df_dyp,
-                                 a,
-                                 b,
-                                 alpha,
-                                 beta,
-                                 n,
-                                 max_iter=50,
-                                 tol=1e-6):
+def finite_differences_nonlinear(
+    f, df_dy, df_dyp, a, b, alpha, beta, n, max_iter=50, tol=1e-6
+):
     """
     Solve a nonlinear BVP using finite differences with Newton's method.
 
@@ -206,10 +199,8 @@ def finite_differences_nonlinear(f,
 
         # Adjust for boundaries
         if n > 0:
-            residual[0] -= (1 / (h * h) + df_dyp(x[1], y[1], 0) /
-                            (2 * h)) * alpha
-            residual[n - 1] -= (1 / (h * h) - df_dyp(x[n], y[n], 0) /
-                                (2 * h)) * beta
+            residual[0] -= (1 / (h * h) + df_dyp(x[1], y[1], 0) / (2 * h)) * alpha
+            residual[n - 1] -= (1 / (h * h) - df_dyp(x[n], y[n], 0) / (2 * h)) * beta
 
         # Solve J * delta = -residual using Gaussian elimination
         delta = solve_system(J, [-r for r in residual])
@@ -282,7 +273,7 @@ def main():
 
     print("Linear BVP: y'' = -2, y(0) = 0, y(1) = 0")
     print("Exact solution: y(x) = x(1-x)")
-    print(f"\nNumerical solution at x = 0.5:")
+    print("\nNumerical solution at x = 0.5:")
     mid_idx = len(x) // 2
     print(f"  y(0.5) ≈ {y[mid_idx]:.6f}")
     print(f"  Exact:   {0.5 * 0.5:.6f}")
@@ -305,7 +296,7 @@ def main():
     x2, y2 = finite_differences_nonlinear(f, df_dy, df_dyp, 0, 1, 0, 0, 10)
 
     print("\n\nNonlinear BVP: y'' = -exp(y), y(0) = 0, y(1) = 0")
-    print(f"Solution at x = 0.5: y ≈ {y2[len(y2)//2]:.6f}")
+    print(f"Solution at x = 0.5: y ≈ {y2[len(y2) // 2]:.6f}")
 
 
 if __name__ == "__main__":

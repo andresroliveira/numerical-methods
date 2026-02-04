@@ -103,7 +103,7 @@ def main():
     # Solution: (x, y) ≈ (2, 1) or (1, 2)
 
     def F(x):
-        return [x[0]**2 + x[1]**2 - 5, x[0] * x[1] - 2]
+        return [x[0] ** 2 + x[1] ** 2 - 5, x[0] * x[1] - 2]
 
     def J(x):
         return [[2 * x[0], 2 * x[1]], [x[1], x[0]]]
@@ -115,9 +115,9 @@ def main():
     print("  x^2 + y^2 = 5")
     print("  x*y = 2")
     print(f"\nSolution: x = {solution[0]:.6f}, y = {solution[1]:.6f}")
-    print(f"Verification:")
-    print(f"  x^2 + y^2 = {solution[0]**2 + solution[1]**2:.6f}")
-    print(f"  x*y = {solution[0]*solution[1]:.6f}")
+    print("Verification:")
+    print(f"  x^2 + y^2 = {solution[0] ** 2 + solution[1] ** 2:.6f}")
+    print(f"  x*y = {solution[0] * solution[1]:.6f}")
 
     # Example 2: 3x3 system
     # x^2 + y^2 + z^2 = 14
@@ -127,7 +127,7 @@ def main():
 
     def G(x):
         return [
-            x[0]**2 + x[1]**2 + x[2]**2 - 14,
+            x[0] ** 2 + x[1] ** 2 + x[2] ** 2 - 14,
             x[0] * x[1] * x[2] - 8,
             x[0] + x[1] + x[2] - 6,
         ]
@@ -149,11 +149,11 @@ def main():
     print(
         f"\nSolution: x = {solution2[0]:.6f}, y = {solution2[1]:.6f}, z = {solution2[2]:.6f}"
     )
-    print(f"Verification:")
+    print("Verification:")
     print(
-        f"  x^2 + y^2 + z^2 = {solution2[0]**2 + solution2[1]**2 + solution2[2]**2:.6f}"
+        f"  x^2 + y^2 + z^2 = {solution2[0] ** 2 + solution2[1] ** 2 + solution2[2] ** 2:.6f}"
     )
-    print(f"  x*y*z = {solution2[0]*solution2[1]*solution2[2]:.6f}")
+    print(f"  x*y*z = {solution2[0] * solution2[1] * solution2[2]:.6f}")
     print(f"  x + y + z = {solution2[0] + solution2[1] + solution2[2]:.6f}")
 
 

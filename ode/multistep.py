@@ -322,7 +322,7 @@ def main():
 
     y_exact = math.exp(-1)
 
-    print(f"\n   Method\t\ty(1.0)\t\tError")
+    print("\n   Method\t\ty(1.0)\t\tError")
     print("   " + "-" * 50)
     print(f"   Exact\t\t{y_exact:.8f}")
     print(f"   AB2\t\t\t{y_ab2[-1]:.8f}\t{abs(y_ab2[-1] - y_exact):.2e}")
@@ -345,12 +345,12 @@ def main():
     t_ab4, y_ab4 = adams_bashforth_4(f2, 0, 1, h, n)
     t_am4, y_am4 = adams_moulton_4(f2, 0, 1, h, n)
 
-    print(f"\n   t\t\tAB4\t\tAM4\t\tExact\t\tAB4 Error")
+    print("\n   t\t\tAB4\t\tAM4\t\tExact\t\tAB4 Error")
     print("   " + "-" * 70)
 
     for i in [0, len(t_ab4) // 4, len(t_ab4) // 2, 3 * len(t_ab4) // 4, -1]:
         t = t_ab4[i]
-        y_exact = math.exp(-t**2)
+        y_exact = math.exp(-(t**2))
         error_ab4 = abs(y_ab4[i] - y_exact)
         print(
             f"   {t:.4f}\t{y_ab4[i]:.8f}\t{y_am4[i]:.8f}\t{y_exact:.8f}\t{error_ab4:.2e}"
@@ -370,18 +370,17 @@ def main():
     try:
         t_ab2, y_ab2 = adams_bashforth_2(f3, 0, 1, h, n)
         print(f"   AB2 (explicit):  y(1) = {y_ab2[-1]:.8f}")
-    except:
-        print(f"   AB2 (explicit):  UNSTABLE")
+    except Exception:
+        print("   AB2 (explicit):  UNSTABLE")
 
     try:
         t_am2, y_am2 = adams_moulton_2(f3, 0, 1, h, n)
         y_exact = math.exp(-10)
         error = abs(y_am2[-1] - y_exact)
-        print(
-            f"   AM2 (implicit):  y(1) = {y_am2[-1]:.8f} (error: {error:.2e})")
+        print(f"   AM2 (implicit):  y(1) = {y_am2[-1]:.8f} (error: {error:.2e})")
         print(f"   Exact:           y(1) = {y_exact:.8f}")
-    except:
-        print(f"   AM2 (implicit):  Failed")
+    except Exception:
+        print("   AM2 (implicit):  Failed")
 
     print("\n" + "=" * 70)
     print("Note: Multi-step methods require starting values from RK methods")

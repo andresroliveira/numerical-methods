@@ -158,7 +158,7 @@ def main():
     y_values, yp_values = solve_second_order(f, y0, yp0, T, n, method="rk4")
 
     print("Simple harmonic oscillator: y'' = -y, y(0) = 1, y'(0) = 0")
-    print(f"Solution at t = 2π:")
+    print("Solution at t = 2π:")
     print(f"  y computed:  {y_values[-1]:.6f}")
     print(f"  y exact:     {math.cos(T):.6f}")
     print(f"  y' computed: {yp_values[-1]:.6f}")
@@ -175,7 +175,7 @@ def main():
 
     y_values2, yp_values2 = solve_second_order(g, y0, yp0, T, n, method="rk4")
 
-    print(f"\nDamped oscillator: y'' = -2y' - y, y(0) = 1, y'(0) = 0")
+    print("\nDamped oscillator: y'' = -2y' - y, y(0) = 1, y'(0) = 0")
     print(f"Solution at t = {T}:")
     print(f"  y  = {y_values2[-1]:.6f}")
     print(f"  y' = {yp_values2[-1]:.6f}")

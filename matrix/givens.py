@@ -23,11 +23,11 @@ def givens_rotation(a, b):
         s = 0.0
     elif abs(a) < abs(b):
         tau = -a / b
-        s = 1.0 / (1 + tau**2)**0.5
+        s = 1.0 / (1 + tau**2) ** 0.5
         c = s * tau
     else:
         tau = -b / a
-        c = 1.0 / (1 + tau**2)**0.5
+        c = 1.0 / (1 + tau**2) ** 0.5
         s = c * tau
 
     return c, s
@@ -59,7 +59,7 @@ def givens_matrix(n, i, j, c, s):
         The Givens rotation matrix.
 
     """
-    G = [[1.0 if k == l else 0.0 for l in range(n)] for k in range(n)]
+    G = [[1.0 if k == j else 0.0 for j in range(n)] for k in range(n)]
 
     G[i][i] = c
     G[i][j] = s
@@ -191,7 +191,7 @@ def main():
     r1 = c * a + s * b
     r2 = -s * a + c * b
     print(f"Result: [{r1:.6f}, {r2:.6f}]")
-    print(f"(Second element should be ~0)")
+    print("(Second element should be ~0)")
 
     # Example 2: Givens matrix
     G = givens_matrix(3, 0, 1, c, s)

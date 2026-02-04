@@ -16,11 +16,10 @@ def householder_vector(x):
         The Householder vector v.
 
     """
-    n = len(x)
     v = x[:]
 
     # Compute norm of x
-    norm_x = sum(xi**2 for xi in x)**0.5
+    norm_x = sum(xi**2 for xi in x) ** 0.5
 
     # Set sign to avoid cancellation
     sign = 1 if x[0] >= 0 else -1
@@ -29,7 +28,7 @@ def householder_vector(x):
     v[0] = x[0] + sign * norm_x
 
     # Normalize v
-    norm_v = sum(vi**2 for vi in v)**0.5
+    norm_v = sum(vi**2 for vi in v) ** 0.5
     if norm_v > 1e-10:
         v = [vi / norm_v for vi in v]
 
@@ -93,8 +92,8 @@ def apply_householder(A, v, k=0):
     for i in range(k, m):
         for j in range(n):
             val = A[i][j]
-            for l in range(k, m):
-                val -= 2 * v[i - k] * v[l - k] * A[l][j]
+            for row_idx in range(k, m):
+                val -= 2 * v[i - k] * v[row_idx - k] * A[row_idx][j]
             A_new[i][j] = val
 
     return A_new

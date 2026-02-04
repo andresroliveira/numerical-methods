@@ -41,7 +41,7 @@ def conjugate_gradient(A, b, x0=None, tol=1e-6, max_iter=None):
     p = r[:]
 
     # Initial residual norm squared
-    rs_old = sum(r[i]**2 for i in range(n))
+    rs_old = sum(r[i] ** 2 for i in range(n))
 
     for iteration in range(max_iter):
         # Check convergence
@@ -62,7 +62,7 @@ def conjugate_gradient(A, b, x0=None, tol=1e-6, max_iter=None):
         r = [r[i] - alpha * Ap[i] for i in range(n)]
 
         # Compute new residual norm squared
-        rs_new = sum(r[i]**2 for i in range(n))
+        rs_new = sum(r[i] ** 2 for i in range(n))
 
         # Compute beta
         beta = rs_new / rs_old if rs_old != 0 else 0
@@ -76,12 +76,7 @@ def conjugate_gradient(A, b, x0=None, tol=1e-6, max_iter=None):
     return x
 
 
-def preconditioned_conjugate_gradient(A,
-                                      b,
-                                      M_inv,
-                                      x0=None,
-                                      tol=1e-6,
-                                      max_iter=None):
+def preconditioned_conjugate_gradient(A, b, M_inv, x0=None, tol=1e-6, max_iter=None):
     """
     Solve Ax = b using preconditioned conjugate gradient method.
 
@@ -131,7 +126,7 @@ def preconditioned_conjugate_gradient(A,
 
     for iteration in range(max_iter):
         # Check convergence
-        if sum(r[i]**2 for i in range(n))**0.5 < tol:
+        if sum(r[i] ** 2 for i in range(n)) ** 0.5 < tol:
             break
 
         # Compute A*p
@@ -178,9 +173,7 @@ def main():
     print(f"\nSolution: x = {[f'{val:.6f}' for val in x]}")
 
     # Verify
-    result = [
-        sum(A[i][j] * x[j] for j in range(len(x))) for i in range(len(A))
-    ]
+    result = [sum(A[i][j] * x[j] for j in range(len(x))) for i in range(len(A))]
     print(f"Verification Ax = {[f'{val:.6f}' for val in result]}")
 
     # Example 2: Larger system
@@ -195,17 +188,15 @@ def main():
     print(f"\nSolution: x = {[f'{val:.6f}' for val in x2]}")
 
     # Verify
-    result2 = [
-        sum(A2[i][j] * x2[j] for j in range(len(x2))) for i in range(len(A2))
-    ]
+    result2 = [sum(A2[i][j] * x2[j] for j in range(len(x2))) for i in range(len(A2))]
     print(f"Verification Ax = {[f'{val:.6f}' for val in result2]}")
 
     # Example 3: Compare with exact solution
     # For A = [[4,1],[1,3]], b = [1,2]
     # Exact solution: x = [1/11, 7/11] ≈ [0.090909, 0.636364]
-    print(f"\nExact solution: [0.090909, 0.636364]")
+    print("\nExact solution: [0.090909, 0.636364]")
     print(f"CG solution:    {[f'{val:.6f}' for val in x]}")
-    print(f"Error: {[(abs(x[i] - [1/11, 7/11][i]))for i in range(2)]}")
+    print(f"Error: {[(abs(x[i] - [1 / 11, 7 / 11][i])) for i in range(2)]}")
 
 
 if __name__ == "__main__":

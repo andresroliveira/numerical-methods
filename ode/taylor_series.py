@@ -1,5 +1,5 @@
 """
-    Given x' = f(t, x), find x(t) for t in [0, T] with x(0) = x0.
+Given x' = f(t, x), find x(t) for t in [0, T] with x(0) = x0.
 """
 
 
@@ -52,8 +52,7 @@ def taylor_series_order2(f, df_dt, df_dx, x0, T, n):
     return result
 
 
-def taylor_series_order3(f, df_dt, df_dx, d2f_dt2, d2f_dtdx, d2f_dx2, x0, T,
-                         n):
+def taylor_series_order3(f, df_dt, df_dx, d2f_dt2, d2f_dtdx, d2f_dx2, x0, T, n):
     """
     Solve x' = f(t, x), x(0) = x0, with 3rd order Taylor series method.
 
@@ -98,8 +97,12 @@ def taylor_series_order3(f, df_dt, df_dx, d2f_dt2, d2f_dtdx, d2f_dx2, x0, T,
         df_total = df_dt_val + df_dx_val * f_val
 
         # Second derivative: d²f/dt²
-        d2f_total = (d2f_dt2(t, x) + 2 * d2f_dtdx(t, x) * f_val +
-                     d2f_dx2(t, x) * f_val * f_val + df_dx_val * df_total)
+        d2f_total = (
+            d2f_dt2(t, x)
+            + 2 * d2f_dtdx(t, x) * f_val
+            + d2f_dx2(t, x) * f_val * f_val
+            + df_dx_val * df_total
+        )
 
         # Taylor series: x(t+h) = x + h*f + (h^2/2)*df + (h^3/6)*d2f
         x += dt * f_val + (dt**2 / 2) * df_total + (dt**3 / 6) * d2f_total
@@ -149,7 +152,7 @@ def main():
     n = 50
 
     result = taylor_series_order2(g, dg_dt, dg_dx, x0, T, n)
-    print(f"\nLogistic equation x' = x(1-x), x(0) = 0.1")
+    print("\nLogistic equation x' = x(1-x), x(0) = 0.1")
     print(f"Solution at t={T}: {result[-1]:.6f}")
 
 

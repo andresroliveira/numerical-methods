@@ -46,7 +46,7 @@ def arnoldi_iteration(A, v0, m):
     n = len(A)
 
     # Normalize initial vector
-    norm_v0 = sum(x**2 for x in v0)**0.5
+    norm_v0 = sum(x**2 for x in v0) ** 0.5
     if norm_v0 < 1e-14:
         raise ValueError("Initial vector must be non-zero")
 
@@ -73,7 +73,7 @@ def arnoldi_iteration(A, v0, m):
                 w[k] -= H[i][j] * q_i[k]
 
         # Compute norm of w
-        h_next = sum(x**2 for x in w)**0.5
+        h_next = sum(x**2 for x in w) ** 0.5
 
         if h_next < 1e-14:
             # Lucky breakdown - exact invariant subspace found
@@ -120,6 +120,7 @@ def arnoldi_eigenvalues(A, m, num_restarts=0):
 
     # Start with random initial vector
     import random
+
     random.seed(42)
     v0 = [random.random() - 0.5 for _ in range(n)]
 
@@ -168,6 +169,7 @@ def arnoldi_largest_eigenvalues(A, k, m=None, tol=1e-8, max_iter=100):
         m = min(2 * k + 1, n)
 
     import random
+
     random.seed(42)
     v0 = [random.random() - 0.5 for _ in range(n)]
 
@@ -281,7 +283,7 @@ def qr_eigenvalues_hessenberg(H, max_iter=100, tol=1e-10):
             else:
                 # Complex eigenvalues
                 real_part = trace / 2
-                imag_part = (-disc)**0.5 / 2
+                imag_part = (-disc) ** 0.5 / 2
                 eigenvalues.append(complex(real_part, imag_part))
                 eigenvalues.append(complex(real_part, -imag_part))
 
@@ -322,7 +324,7 @@ def qr_hessenberg(H):
             continue
 
         # Compute Givens rotation
-        r = (a**2 + b**2)**0.5
+        r = (a**2 + b**2) ** 0.5
         c = a / r if r > 0 else 1.0
         s = b / r if r > 0 else 0.0
 
@@ -360,7 +362,6 @@ def matrix_mult(A, B):
 
 def main():
     """Example usage of Arnoldi iteration."""
-    import math
 
     print("=" * 70)
     print("Arnoldi Iteration for Eigenvalue Computation")
@@ -383,12 +384,12 @@ def main():
         print(f"   {[f'{x:8.5f}' for x in row]}")
 
     eigs = arnoldi_eigenvalues(A1, 3)
-    print(f"\n   Approximate eigenvalues:")
+    print("\n   Approximate eigenvalues:")
     for i, eig in enumerate(eigs):
         if isinstance(eig, complex):
-            print(f"   λ{i+1} = {eig.real:.6f} + {eig.imag:.6f}i")
+            print(f"   λ{i + 1} = {eig.real:.6f} + {eig.imag:.6f}i")
         else:
-            print(f"   λ{i+1} = {eig:.6f}")
+            print(f"   λ{i + 1} = {eig:.6f}")
 
     # Example 2: Non-symmetric matrix
     print("\n2. Non-symmetric matrix")
@@ -399,15 +400,13 @@ def main():
         print(f"   {row}")
 
     eigs2 = arnoldi_eigenvalues(A2, 3)
-    print(f"\n   Eigenvalues (should be cube roots of unity):")
+    print("\n   Eigenvalues (should be cube roots of unity):")
     for i, eig in enumerate(eigs2):
         if isinstance(eig, complex):
             mag = abs(eig)
-            print(
-                f"   λ{i+1} = {eig.real:.6f} + {eig.imag:.6f}i  (|λ| = {mag:.6f})"
-            )
+            print(f"   λ{i + 1} = {eig.real:.6f} + {eig.imag:.6f}i  (|λ| = {mag:.6f})")
         else:
-            print(f"   λ{i+1} = {eig:.6f}")
+            print(f"   λ{i + 1} = {eig:.6f}")
 
     # Example 3: Larger matrix - find dominant eigenvalues
     print("\n3. Larger matrix - dominant eigenvalues")
@@ -425,12 +424,12 @@ def main():
     print("   Diagonal: [5, 4, 3, 2, 1], off-diagonal: 0.5")
 
     eigs3 = arnoldi_eigenvalues(A3, min(n, 5))
-    print(f"\n   Approximate eigenvalues:")
+    print("\n   Approximate eigenvalues:")
     for i, eig in enumerate(sorted(eigs3, key=lambda x: abs(x), reverse=True)):
         if isinstance(eig, complex):
-            print(f"   λ{i+1} = {eig.real:.6f} + {eig.imag:.6f}i")
+            print(f"   λ{i + 1} = {eig.real:.6f} + {eig.imag:.6f}i")
         else:
-            print(f"   λ{i+1} = {eig:.6f}")
+            print(f"   λ{i + 1} = {eig:.6f}")
 
     # Example 4: Convergence with different subspace sizes
     print("\n4. Effect of Krylov subspace dimension")

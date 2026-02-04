@@ -43,8 +43,7 @@ def sor(A, b, omega, x=None, tol=1e-6, max_iter=1000):
             sum2 = sum(A[i][j] * x_old[j] for j in range(i + 1, n))
 
             # SOR update
-            x_gauss_seidel = (b[i] - sum1 -
-                              sum2) / A[i][i] if A[i][i] != 0 else 0
+            x_gauss_seidel = (b[i] - sum1 - sum2) / A[i][i] if A[i][i] != 0 else 0
             x[i] = (1 - omega) * x_old[i] + omega * x_gauss_seidel
 
         # Check convergence
@@ -102,8 +101,8 @@ def verify(A, b, x, tol=1e-6):
     """
     n = len(A)
     return all(
-        abs(sum(A[i][j] * x[j] for j in range(n)) - b[i]) < tol
-        for i in range(n))
+        abs(sum(A[i][j] * x[j] for j in range(n)) - b[i]) < tol for i in range(n)
+    )
 
 
 def main():
@@ -140,7 +139,7 @@ def main():
 
     # Compare with Gauss-Seidel (omega = 1)
     x_gs = sor(A2, b2, 1.0, tol=1e-8)
-    print(f"\nGauss-Seidel (ω = 1.0):")
+    print("\nGauss-Seidel (ω = 1.0):")
     print(f"Solution: {[f'{val:.6f}' for val in x_gs]}")
 
 

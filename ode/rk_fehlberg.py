@@ -99,11 +99,10 @@ def rk45(f, t0, y0, tf, tol=1e-6, h_init=0.1, h_min=1e-10, h_max=1.0):
             k2 = h * f(t + a2 * h, y + b21 * k1)
             k3 = h * f(t + a3 * h, y + b31 * k1 + b32 * k2)
             k4 = h * f(t + a4 * h, y + b41 * k1 + b42 * k2 + b43 * k3)
-            k5 = h * f(t + a5 * h,
-                       y + b51 * k1 + b52 * k2 + b53 * k3 + b54 * k4)
+            k5 = h * f(t + a5 * h, y + b51 * k1 + b52 * k2 + b53 * k3 + b54 * k4)
             k6 = h * f(
-                t + a6 * h,
-                y + b61 * k1 + b62 * k2 + b63 * k3 + b64 * k4 + b65 * k5)
+                t + a6 * h, y + b61 * k1 + b62 * k2 + b63 * k3 + b64 * k4 + b65 * k5
+            )
 
             # 4th and 5th order solutions
             y4 = y + c1 * k1 + c2 * k2 + c3 * k3 + c4 * k4 + c5 * k5
@@ -122,31 +121,30 @@ def rk45(f, t0, y0, tf, tol=1e-6, h_init=0.1, h_min=1e-10, h_max=1.0):
 
             k1 = [h * fi for fi in f(t, y)]
             k2 = [h * fi for fi in f(t + a2 * h, add_vectors(y, b21, k1))]
-            k3 = [
-                h * fi
-                for fi in f(t + a3 * h, add_vectors(y, b31, k1, b32, k2))
-            ]
+            k3 = [h * fi for fi in f(t + a3 * h, add_vectors(y, b31, k1, b32, k2))]
             k4 = [
                 h * fi
-                for fi in f(t +
-                            a4 * h, add_vectors(y, b41, k1, b42, k2, b43, k3))
+                for fi in f(t + a4 * h, add_vectors(y, b41, k1, b42, k2, b43, k3))
             ]
             k5 = [
                 h * fi
-                for fi in f(t + a5 * h,
-                            add_vectors(y, b51, k1, b52, k2, b53, k3, b54, k4))
+                for fi in f(
+                    t + a5 * h, add_vectors(y, b51, k1, b52, k2, b53, k3, b54, k4)
+                )
             ]
             k6 = [
-                h * fi for fi in
-                f(t + a6 * h,
-                  add_vectors(y, b61, k1, b62, k2, b63, k3, b64, k4, b65, k5))
+                h * fi
+                for fi in f(
+                    t + a6 * h,
+                    add_vectors(y, b61, k1, b62, k2, b63, k3, b64, k4, b65, k5),
+                )
             ]
 
             y4 = add_vectors(y, c1, k1, c2, k2, c3, k3, c4, k4, c5, k5)
             y5 = add_vectors(y, d1, k1, d2, k2, d3, k3, d4, k4, d5, k5, d6, k6)
 
             # Error estimate (max norm)
-            error = max(abs(y5[i] - y4[i]) for i in range(len(y)))
+            error = max(abs(y5[i] - y4[i]) for i in range(len(y4)))
 
         # Adjust step size
         if error < tol or error == 0:
@@ -159,7 +157,7 @@ def rk45(f, t0, y0, tf, tol=1e-6, h_init=0.1, h_min=1e-10, h_max=1.0):
 
         # Calculate new step size
         if error > 0:
-            s = 0.84 * (tol / error)**0.25
+            s = 0.84 * (tol / error) ** 0.25
             h = h * min(4, max(0.1, s))
         else:
             h = h * 4
@@ -237,7 +235,7 @@ def main():
     for i in [0, len(t_vals) // 4, len(t_vals) // 2, 3 * len(t_vals) // 4, -1]:
         t = t_vals[i]
         y_rk = y_vals[i]
-        y_exact = math.exp(-t**2)
+        y_exact = math.exp(-(t**2))
         error = abs(y_rk - y_exact)
         print(f"   {t:.4f}\t{y_rk:.8f}\t{y_exact:.8f}\t{error:.2e}")
 
@@ -269,7 +267,7 @@ def main():
     mu = 10
 
     def f3(t, y):
-        return [y[1], mu * (1 - y[0]**2) * y[1] - y[0]]
+        return [y[1], mu * (1 - y[0] ** 2) * y[1] - y[0]]
 
     try:
         t_vals, y_vals = rkf45_system(f3, 0, [2, 0], 20, tol=1e-5, h_init=0.01)

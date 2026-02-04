@@ -71,8 +71,7 @@ def backward_euler(f, t0, y0, h, n, tol=1e-8, max_iter=20):
 
             y_new = y_next
         else:
-            raise ValueError(
-                f"Fixed-point iteration did not converge at t={t_new}")
+            raise ValueError(f"Fixed-point iteration did not converge at t={t_new}")
 
         t_vals.append(t_new)
         y_vals.append(y_new)
@@ -270,11 +269,10 @@ def main():
 
     y_exact = math.exp(-10)
 
-    print(f"\n   Method\t\t\ty(1.0)\t\t\tError")
+    print("\n   Method\t\t\ty(1.0)\t\t\tError")
     print("   " + "-" * 60)
     print(f"   Exact\t\t\t{y_exact:.10f}")
-    print(
-        f"   Backward Euler\t\t{y_be[-1]:.10f}\t{abs(y_be[-1] - y_exact):.2e}")
+    print(f"   Backward Euler\t\t{y_be[-1]:.10f}\t{abs(y_be[-1] - y_exact):.2e}")
     print(
         f"   Backward Euler (Newton)\t{y_ben[-1]:.10f}\t{abs(y_ben[-1] - y_exact):.2e}"
     )
@@ -322,7 +320,7 @@ def main():
     t_ben, y_ben = backward_euler_newton(f3, df3_dy, 0, 1, h, n)
     t_bdf2, y_bdf2 = bdf2(f3, 0, 1, h, n)
 
-    print(f"\n   t\t\tBE\t\tBE-Newton\tBDF2\t\tExact")
+    print("\n   t\t\tBE\t\tBE-Newton\tBDF2\t\tExact")
     print("   " + "-" * 70)
 
     for i in [0, len(t_be) // 4, len(t_be) // 2, 3 * len(t_be) // 4, -1]:

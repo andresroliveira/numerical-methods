@@ -66,8 +66,7 @@ def heat_explicit(alpha, x_min, x_max, nx, t_max, dt, u0, boundary_conditions):
     # Check stability
     r = alpha * dt / (dx * dx)
     if r > 0.5:
-        raise ValueError(
-            f"Unstable! r = {r:.4f} > 0.5. Reduce dt or increase nx.")
+        raise ValueError(f"Unstable! r = {r:.4f} > 0.5. Reduce dt or increase nx.")
 
     # Time steps
     nt = int(t_max / dt) + 1
@@ -83,13 +82,14 @@ def heat_explicit(alpha, x_min, x_max, nx, t_max, dt, u0, boundary_conditions):
         u_next = [0.0] * nx
 
         # Boundary conditions
-        u_next[0] = boundary_conditions['left']
-        u_next[-1] = boundary_conditions['right']
+        u_next[0] = boundary_conditions["left"]
+        u_next[-1] = boundary_conditions["right"]
 
         # Interior points: u_new[i] = u[i] + r*(u[i+1] - 2*u[i] + u[i-1])
         for i in range(1, nx - 1):
             u_next[i] = u_current[i] + r * (
-                u_current[i + 1] - 2 * u_current[i] + u_current[i - 1])
+                u_current[i + 1] - 2 * u_current[i] + u_current[i - 1]
+            )
 
         u_current = u_next
         u.append(list(u_current))
@@ -167,15 +167,16 @@ def heat_implicit(alpha, x_min, x_max, nx, t_max, dt, u0, boundary_conditions):
         d = list(u_current[1:-1])
 
         # Apply boundary conditions
-        d[0] += r * boundary_conditions['left']
-        d[-1] += r * boundary_conditions['right']
+        d[0] += r * boundary_conditions["left"]
+        d[-1] += r * boundary_conditions["right"]
 
         # Solve tridiagonal system
         u_interior = solve_tridiagonal(a, b, c, d)
 
         # Assemble solution
-        u_next = [boundary_conditions['left']
-                  ] + u_interior + [boundary_conditions['right']]
+        u_next = (
+            [boundary_conditions["left"]] + u_interior + [boundary_conditions["right"]]
+        )
 
         u_current = u_next
         u.append(list(u_current))
@@ -183,8 +184,7 @@ def heat_implicit(alpha, x_min, x_max, nx, t_max, dt, u0, boundary_conditions):
     return x, t, u
 
 
-def heat_crank_nicolson(alpha, x_min, x_max, nx, t_max, dt, u0,
-                        boundary_conditions):
+def heat_crank_nicolson(alpha, x_min, x_max, nx, t_max, dt, u0, boundary_conditions):
     """
     Solve 1D heat equation using Crank-Nicolson method.
 
@@ -256,19 +256,23 @@ def heat_crank_nicolson(alpha, x_min, x_max, nx, t_max, dt, u0,
 
         for i in range(1, nx - 1):
             j = i - 1  # Index in interior array
-            d[j] = (r / 2) * u_current[i - 1] + (1 - r) * u_current[i] + (
-                r / 2) * u_current[i + 1]
+            d[j] = (
+                (r / 2) * u_current[i - 1]
+                + (1 - r) * u_current[i]
+                + (r / 2) * u_current[i + 1]
+            )
 
         # Apply boundary conditions
-        d[0] += (r / 2) * boundary_conditions['left']
-        d[-1] += (r / 2) * boundary_conditions['right']
+        d[0] += (r / 2) * boundary_conditions["left"]
+        d[-1] += (r / 2) * boundary_conditions["right"]
 
         # Solve tridiagonal system
         u_interior = solve_tridiagonal(a, b, c, d)
 
         # Assemble solution
-        u_next = [boundary_conditions['left']
-                  ] + u_interior + [boundary_conditions['right']]
+        u_next = (
+            [boundary_conditions["left"]] + u_interior + [boundary_conditions["right"]]
+        )
 
         u_current = u_next
         u.append(list(u_current))
@@ -330,23 +334,19 @@ def main():
     print("=" * 70)
 
     # Example 1: Explicit method with sine initial condition
-    print(
-        "\n1. Explicit method: u(x,0) = sin(πx), boundaries u(0,t) = u(1,t) = 0"
-    )
+    print("\n1. Explicit method: u(x,0) = sin(πx), boundaries u(0,t) = u(1,t) = 0")
 
     alpha = 0.1
 
     def u0_sine(x):
         return math.sin(math.pi * x)
 
-    bc = {'left': 0, 'right': 0}
+    bc = {"left": 0, "right": 0}
 
     x, t, u_exp = heat_explicit(alpha, 0, 1, 21, 0.5, 0.001, u0_sine, bc)
 
     print(f"   Grid: {len(x)} points, Time steps: {len(t)}")
-    print(
-        f"   Stability parameter r = {alpha * 0.001 / (0.05**2):.4f} (must be ≤ 0.5)"
-    )
+    print(f"   Stability parameter r = {alpha * 0.001 / (0.05**2):.4f} (must be ≤ 0.5)")
     print(f"\n   x\t\tt=0\t\tt={t[-1]:.3f}")
     print("   " + "-" * 40)
     for i in [0, 5, 10, 15, 20]:
@@ -363,8 +363,7 @@ def main():
 
     x, t_exp, u_exp = heat_explicit(alpha, 0, 1, nx, 0.2, dt, u0_parabola, bc)
     x, t_imp, u_imp = heat_implicit(alpha, 0, 1, nx, 0.2, dt, u0_parabola, bc)
-    x, t_cn, u_cn = heat_crank_nicolson(alpha, 0, 1, nx, 0.2, dt, u0_parabola,
-                                        bc)
+    x, t_cn, u_cn = heat_crank_nicolson(alpha, 0, 1, nx, 0.2, dt, u0_parabola, bc)
 
     print(f"\n   Center point x = 0.5, t = {t_exp[-1]:.2f}")
     print(f"   Explicit:        u = {u_exp[-1][10]:.8f}")
@@ -375,32 +374,30 @@ def main():
     print("\n3. Stability test: Explicit vs Implicit with large dt")
 
     dt_large = 0.05
-    r = alpha * dt_large / ((1.0 / 20)**2)
+    r = alpha * dt_large / ((1.0 / 20) ** 2)
 
     print(f"   Using dt = {dt_large}, r = {r:.4f}")
 
     if r > 0.5:
-        print(f"   Explicit: UNSTABLE (r > 0.5)")
+        print("   Explicit: UNSTABLE (r > 0.5)")
     else:
-        x, t, u_exp_large = heat_explicit(alpha, 0, 1, 21, 0.2, dt_large,
-                                          u0_parabola, bc)
+        x, t, u_exp_large = heat_explicit(
+            alpha, 0, 1, 21, 0.2, dt_large, u0_parabola, bc
+        )
         print(f"   Explicit: Stable, u(0.5, 0.2) = {u_exp_large[-1][10]:.6f}")
 
-    x, t, u_imp_large = heat_implicit(alpha, 0, 1, 21, 0.2, dt_large,
-                                      u0_parabola, bc)
-    print(
-        f"   Implicit: Always stable, u(0.5, 0.2) = {u_imp_large[-1][10]:.6f}")
+    x, t, u_imp_large = heat_implicit(alpha, 0, 1, 21, 0.2, dt_large, u0_parabola, bc)
+    print(f"   Implicit: Always stable, u(0.5, 0.2) = {u_imp_large[-1][10]:.6f}")
 
     # Example 4: Heat dissipation
     print("\n4. Gaussian pulse dissipation: u(x,0) = exp(-100(x-0.5)²)")
 
     def u0_gaussian(x):
-        return math.exp(-100 * (x - 0.5)**2)
+        return math.exp(-100 * (x - 0.5) ** 2)
 
-    x, t, u_gauss = heat_crank_nicolson(alpha, 0, 1, 51, 0.5, 0.01,
-                                        u0_gaussian, bc)
+    x, t, u_gauss = heat_crank_nicolson(alpha, 0, 1, 51, 0.5, 0.01, u0_gaussian, bc)
 
-    print(f"\n   t\t\tMax u\t\tDecay")
+    print("\n   t\t\tMax u\t\tDecay")
     print("   " + "-" * 40)
 
     for i in [0, len(t) // 4, len(t) // 2, 3 * len(t) // 4, -1]:
@@ -415,9 +412,7 @@ def main():
     print("Notes:")
     print("  - Explicit: Simple but requires small dt (r ≤ 0.5)")
     print("  - Implicit: Unconditionally stable but requires solving system")
-    print(
-        "  - Crank-Nicolson: Best accuracy (2nd order), unconditionally stable"
-    )
+    print("  - Crank-Nicolson: Best accuracy (2nd order), unconditionally stable")
     print("=" * 70)
 
 
