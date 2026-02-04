@@ -235,9 +235,10 @@ def main():
     for i in [0, len(t_vals) // 4, len(t_vals) // 2, 3 * len(t_vals) // 4, -1]:
         t = t_vals[i]
         y_rk = y_vals[i]
-        y_exact = math.exp(-(t**2))
-        error = abs(y_rk - y_exact)
-        print(f"   {t:.4f}\t{y_rk:.8f}\t{y_exact:.8f}\t{error:.2e}")
+        if isinstance(y_rk, (int, float)):
+            y_exact = math.exp(-(t**2))
+            error = abs(y_rk - y_exact)
+            print(f"   {t:.4f}\t{y_rk:.8f}\t{y_exact:.8f}\t{error:.2e}")
 
     # Example 2: Oscillator (system)
     print("\n2. Harmonic oscillator: y'' + y = 0")
@@ -255,10 +256,12 @@ def main():
 
     for i in [0, len(t_vals) // 4, len(t_vals) // 2, 3 * len(t_vals) // 4, -1]:
         t = t_vals[i]
-        y1_rk = y_vals[i][0]
-        y1_exact = math.cos(t)
-        error = abs(y1_rk - y1_exact)
-        print(f"   {t:.4f}\t{y1_rk:.8f}\t{y1_exact:.8f}\t{error:.2e}")
+        y_val = y_vals[i]
+        if isinstance(y_val, list):
+            y1_rk = y_val[0]
+            y1_exact = math.cos(t)
+            error = abs(y1_rk - y1_exact)
+            print(f"   {t:.4f}\t{y1_rk:.8f}\t{y1_exact:.8f}\t{error:.2e}")
 
     # Example 3: Stiff problem (demonstrates adaptive stepping)
     print("\n3. Van der Pol equation (μ = 10): y'' - μ(1-y²)y' + y = 0")
@@ -272,7 +275,8 @@ def main():
     try:
         t_vals, y_vals = rkf45_system(f3, 0, [2, 0], 20, tol=1e-5, h_init=0.01)
         print(f"   Successfully solved with {len(t_vals)} adaptive steps")
-        print(f"   Final state: y1({t_vals[-1]:.2f}) = {y_vals[-1][0]:.6f}")
+        if y_vals and isinstance(y_vals[-1], list):
+            print(f"   Final state: y1({t_vals[-1]:.2f}) = {y_vals[-1][0]:.6f}")
     except ValueError as e:
         print(f"   Error: {e}")
 
