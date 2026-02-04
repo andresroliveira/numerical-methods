@@ -8,16 +8,9 @@ Implements iterative methods with Dirichlet and Neumann boundary conditions.
 """
 
 
-def poisson_jacobi(x_min,
-                   x_max,
-                   nx,
-                   y_min,
-                   y_max,
-                   ny,
-                   f,
-                   boundary_conditions,
-                   tol=1e-6,
-                   max_iter=10000):
+def poisson_jacobi(
+    x_min, x_max, nx, y_min, y_max, ny, f, boundary_conditions, tol=1e-6, max_iter=10000
+):
     """
     Solve 2D Poisson equation using Jacobi iteration.
 
@@ -34,7 +27,7 @@ def poisson_jacobi(x_min,
     f : callable
         Source term f(x, y)
     boundary_conditions : dict
-        {'left': callable/float, 'right': callable/float, 
+        {'left': callable/float, 'right': callable/float,
          'bottom': callable/float, 'top': callable/float}
     tol : float, optional
         Convergence tolerance (default: 1e-6)
@@ -73,18 +66,18 @@ def poisson_jacobi(x_min,
 
     # Apply boundary conditions
     for i in range(nx):
-        bc_bottom = boundary_conditions['bottom']
-        bc_top = boundary_conditions['top']
-        u[0][i] = bc_bottom(x[i]) if callable(bc_bottom) else bc_bottom
-        u[ny - 1][i] = bc_top(x[i]) if callable(bc_top) else bc_top
+        bc_bottom = boundary_conditions["bottom"]
+        bc_top = boundary_conditions["top"]
+        u[0][i] = float(bc_bottom(x[i])) if callable(bc_bottom) else float(bc_bottom)
+        u[ny - 1][i] = float(bc_top(x[i])) if callable(bc_top) else float(bc_top)
         u_new[0][i] = u[0][i]
         u_new[ny - 1][i] = u[ny - 1][i]
 
     for j in range(ny):
-        bc_left = boundary_conditions['left']
-        bc_right = boundary_conditions['right']
-        u[j][0] = bc_left(y[j]) if callable(bc_left) else bc_left
-        u[j][nx - 1] = bc_right(y[j]) if callable(bc_right) else bc_right
+        bc_left = boundary_conditions["left"]
+        bc_right = boundary_conditions["right"]
+        u[j][0] = float(bc_left(y[j])) if callable(bc_left) else float(bc_left)
+        u[j][nx - 1] = float(bc_right(y[j])) if callable(bc_right) else float(bc_right)
         u_new[j][0] = u[j][0]
         u_new[j][nx - 1] = u[j][nx - 1]
 
@@ -96,8 +89,13 @@ def poisson_jacobi(x_min,
         for j in range(1, ny - 1):
             for i in range(1, nx - 1):
                 # Finite difference for Laplacian
-                u_new[j][i] = 0.25 * (u[j][i + 1] + u[j][i - 1] + u[j + 1][i] +
-                                      u[j - 1][i] - dx * dx * f(x[i], y[j]))
+                u_new[j][i] = 0.25 * (
+                    u[j][i + 1]
+                    + u[j][i - 1]
+                    + u[j + 1][i]
+                    + u[j - 1][i]
+                    - dx * dx * f(x[i], y[j])
+                )
 
                 diff = abs(u_new[j][i] - u[j][i])
                 max_diff = max(max_diff, diff)
@@ -113,16 +111,9 @@ def poisson_jacobi(x_min,
     raise ValueError(f"Did not converge in {max_iter} iterations")
 
 
-def poisson_gauss_seidel(x_min,
-                         x_max,
-                         nx,
-                         y_min,
-                         y_max,
-                         ny,
-                         f,
-                         boundary_conditions,
-                         tol=1e-6,
-                         max_iter=10000):
+def poisson_gauss_seidel(
+    x_min, x_max, nx, y_min, y_max, ny, f, boundary_conditions, tol=1e-6, max_iter=10000
+):
     """
     Solve 2D Poisson equation using Gauss-Seidel iteration.
 
@@ -156,14 +147,14 @@ def poisson_gauss_seidel(x_min,
 
     # Apply boundary conditions
     for i in range(nx):
-        bc_bottom = boundary_conditions['bottom']
-        bc_top = boundary_conditions['top']
+        bc_bottom = boundary_conditions["bottom"]
+        bc_top = boundary_conditions["top"]
         u[0][i] = bc_bottom(x[i]) if callable(bc_bottom) else bc_bottom
         u[ny - 1][i] = bc_top(x[i]) if callable(bc_top) else bc_top
 
     for j in range(ny):
-        bc_left = boundary_conditions['left']
-        bc_right = boundary_conditions['right']
+        bc_left = boundary_conditions["left"]
+        bc_right = boundary_conditions["right"]
         u[j][0] = bc_left(y[j]) if callable(bc_left) else bc_left
         u[j][nx - 1] = bc_right(y[j]) if callable(bc_right) else bc_right
 
@@ -176,8 +167,13 @@ def poisson_gauss_seidel(x_min,
             for i in range(1, nx - 1):
                 u_old = u[j][i]
 
-                u[j][i] = 0.25 * (u[j][i + 1] + u[j][i - 1] + u[j + 1][i] +
-                                  u[j - 1][i] - dx * dx * f(x[i], y[j]))
+                u[j][i] = 0.25 * (
+                    u[j][i + 1]
+                    + u[j][i - 1]
+                    + u[j + 1][i]
+                    + u[j - 1][i]
+                    - dx * dx * f(x[i], y[j])
+                )
 
                 diff = abs(u[j][i] - u_old)
                 max_diff = max(max_diff, diff)
@@ -188,17 +184,19 @@ def poisson_gauss_seidel(x_min,
     raise ValueError(f"Did not converge in {max_iter} iterations")
 
 
-def poisson_sor(x_min,
-                x_max,
-                nx,
-                y_min,
-                y_max,
-                ny,
-                f,
-                boundary_conditions,
-                omega=1.5,
-                tol=1e-6,
-                max_iter=10000):
+def poisson_sor(
+    x_min,
+    x_max,
+    nx,
+    y_min,
+    y_max,
+    ny,
+    f,
+    boundary_conditions,
+    omega=1.5,
+    tol=1e-6,
+    max_iter=10000,
+):
     """
     Solve 2D Poisson equation using Successive Over-Relaxation (SOR).
 
@@ -235,14 +233,14 @@ def poisson_sor(x_min,
 
     # Apply boundary conditions
     for i in range(nx):
-        bc_bottom = boundary_conditions['bottom']
-        bc_top = boundary_conditions['top']
+        bc_bottom = boundary_conditions["bottom"]
+        bc_top = boundary_conditions["top"]
         u[0][i] = bc_bottom(x[i]) if callable(bc_bottom) else bc_bottom
         u[ny - 1][i] = bc_top(x[i]) if callable(bc_top) else bc_top
 
     for j in range(ny):
-        bc_left = boundary_conditions['left']
-        bc_right = boundary_conditions['right']
+        bc_left = boundary_conditions["left"]
+        bc_right = boundary_conditions["right"]
         u[j][0] = bc_left(y[j]) if callable(bc_left) else bc_left
         u[j][nx - 1] = bc_right(y[j]) if callable(bc_right) else bc_right
 
@@ -256,8 +254,13 @@ def poisson_sor(x_min,
                 u_old = u[j][i]
 
                 # Gauss-Seidel update
-                u_gs = 0.25 * (u[j][i + 1] + u[j][i - 1] + u[j + 1][i] +
-                               u[j - 1][i] - dx * dx * f(x[i], y[j]))
+                u_gs = 0.25 * (
+                    u[j][i + 1]
+                    + u[j][i - 1]
+                    + u[j + 1][i]
+                    + u[j - 1][i]
+                    - dx * dx * f(x[i], y[j])
+                )
 
                 # SOR: u_new = ω*u_gs + (1-ω)*u_old
                 u[j][i] = omega * u_gs + (1 - omega) * u_old
@@ -286,36 +289,15 @@ def main():
     def f_zero(x, y):
         return 0
 
-    bc1 = {'left': 0, 'right': 0, 'bottom': 0, 'top': 1}
+    bc1 = {"left": 0, "right": 0, "bottom": 0, "top": 1}
 
-    x, y, u_jac, iters_jac = poisson_jacobi(0,
-                                            1,
-                                            21,
-                                            0,
-                                            1,
-                                            21,
-                                            f_zero,
-                                            bc1,
-                                            tol=1e-5)
-    x, y, u_gs, iters_gs = poisson_gauss_seidel(0,
-                                                1,
-                                                21,
-                                                0,
-                                                1,
-                                                21,
-                                                f_zero,
-                                                bc1,
-                                                tol=1e-5)
-    x, y, u_sor, iters_sor = poisson_sor(0,
-                                         1,
-                                         21,
-                                         0,
-                                         1,
-                                         21,
-                                         f_zero,
-                                         bc1,
-                                         omega=1.8,
-                                         tol=1e-5)
+    x, y, u_jac, iters_jac = poisson_jacobi(0, 1, 21, 0, 1, 21, f_zero, bc1, tol=1e-5)
+    x, y, u_gs, iters_gs = poisson_gauss_seidel(
+        0, 1, 21, 0, 1, 21, f_zero, bc1, tol=1e-5
+    )
+    x, y, u_sor, iters_sor = poisson_sor(
+        0, 1, 21, 0, 1, 21, f_zero, bc1, omega=1.8, tol=1e-5
+    )
 
     print(f"\n   Method\t\tIterations\tu(0.5, 0.5)")
     print("   " + "-" * 50)
@@ -330,18 +312,11 @@ def main():
     def f_const(x, y):
         return -2
 
-    bc2 = {'left': 0, 'right': 0, 'bottom': 0, 'top': 0}
+    bc2 = {"left": 0, "right": 0, "bottom": 0, "top": 0}
 
-    x, y, u_poisson, iters = poisson_sor(0,
-                                         1,
-                                         21,
-                                         0,
-                                         1,
-                                         21,
-                                         f_const,
-                                         bc2,
-                                         omega=1.9,
-                                         tol=1e-5)
+    x, y, u_poisson, iters = poisson_sor(
+        0, 1, 21, 0, 1, 21, f_const, bc2, omega=1.9, tol=1e-5
+    )
 
     print(f"\n   Converged in {iters} iterations")
     print(f"   Maximum u: {max(max(row) for row in u_poisson):.6f} at center")
@@ -353,18 +328,11 @@ def main():
     def bc_top(x):
         return math.sin(math.pi * x)
 
-    bc3 = {'left': 0, 'right': 0, 'bottom': 0, 'top': bc_top}
+    bc3 = {"left": 0, "right": 0, "bottom": 0, "top": bc_top}
 
-    x, y, u_var, iters = poisson_sor(0,
-                                     1,
-                                     31,
-                                     0,
-                                     1,
-                                     31,
-                                     f_zero,
-                                     bc3,
-                                     omega=1.85,
-                                     tol=1e-6)
+    x, y, u_var, iters = poisson_sor(
+        0, 1, 31, 0, 1, 31, f_zero, bc3, omega=1.85, tol=1e-6
+    )
 
     print(f"\n   Converged in {iters} iterations")
     print(f"\n   x\t\ty=0.25\t\ty=0.5\t\ty=0.75\t\ty=1.0")
@@ -381,45 +349,23 @@ def main():
     print("\n4. Convergence rate comparison (same problem)")
 
     def f_test(x, y):
-        return -math.pi**2 * math.sin(math.pi * x) * math.sin(math.pi * y)
+        return -(math.pi**2) * math.sin(math.pi * x) * math.sin(math.pi * y)
 
-    bc4 = {'left': 0, 'right': 0, 'bottom': 0, 'top': 0}
+    bc4 = {"left": 0, "right": 0, "bottom": 0, "top": 0}
 
-    _, _, _, iters_jac = poisson_jacobi(0,
-                                        1,
-                                        21,
-                                        0,
-                                        1,
-                                        21,
-                                        f_test,
-                                        bc4,
-                                        tol=1e-4,
-                                        max_iter=50000)
-    _, _, _, iters_gs = poisson_gauss_seidel(0,
-                                             1,
-                                             21,
-                                             0,
-                                             1,
-                                             21,
-                                             f_test,
-                                             bc4,
-                                             tol=1e-4)
+    _, _, _, iters_jac = poisson_jacobi(
+        0, 1, 21, 0, 1, 21, f_test, bc4, tol=1e-4, max_iter=50000
+    )
+    _, _, _, iters_gs = poisson_gauss_seidel(0, 1, 21, 0, 1, 21, f_test, bc4, tol=1e-4)
 
     # Find optimal omega
     best_omega = 1.5
     best_iters = 10000
     for omega in [1.5, 1.7, 1.8, 1.85, 1.9, 1.95]:
         try:
-            _, _, _, iters = poisson_sor(0,
-                                         1,
-                                         21,
-                                         0,
-                                         1,
-                                         21,
-                                         f_test,
-                                         bc4,
-                                         omega=omega,
-                                         tol=1e-4)
+            _, _, _, iters = poisson_sor(
+                0, 1, 21, 0, 1, 21, f_test, bc4, omega=omega, tol=1e-4
+            )
             if iters < best_iters:
                 best_iters = iters
                 best_omega = omega
@@ -429,7 +375,7 @@ def main():
     print(f"\n   Jacobi:              {iters_jac} iterations")
     print(f"   Gauss-Seidel:        {iters_gs} iterations")
     print(f"   SOR (ω={best_omega}):       {best_iters} iterations")
-    print(f"\n   Speedup (SOR/Jacobi): {iters_jac/best_iters:.1f}x")
+    print(f"\n   Speedup (SOR/Jacobi): {iters_jac / best_iters:.1f}x")
 
     print("\n" + "=" * 70)
     print("Notes:")
