@@ -21,6 +21,7 @@ def newton(f, df, x0, tol=1e-6, max_iter=100):
         The estimated root.
 
     """
+    x = x0
     for _ in range(max_iter):
         x = x0 - f(x0) / df(x0)
         if abs(x - x0) < tol:
