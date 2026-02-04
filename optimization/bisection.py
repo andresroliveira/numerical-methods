@@ -29,6 +29,8 @@ def bisection(f, a, b, tol=1e-6, max_iter=100):
     if f(a) * f(b) > 0:
         raise ValueError("The function must have opposite signs at the endpoints.")
 
+    x = a
+
     for _ in range(max_iter):
         x = (a + b) / 2
         if (abs(x)) < tol or (b - a) / 2 < tol:

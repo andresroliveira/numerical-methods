@@ -29,6 +29,8 @@ def false_position(f, a, b, tol=1e-6, max_iter=100):
     if f(a) * f(b) > 0:
         raise ValueError("The function must have opposite signs at the endpoints.")
 
+    x = a
+
     for _ in range(max_iter):
         x = a - f(a) * (b - a) / (f(b) - f(a))
         if abs(f(x)) < tol or (b - a) / 2 < tol:
@@ -39,6 +41,7 @@ def false_position(f, a, b, tol=1e-6, max_iter=100):
             a = x
 
     return x
+
 
 def f(x):
     return x**2 - 2
